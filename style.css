@@ -1,0 +1,275 @@
+:root {
+    /* Light Mode Variables */
+    --bg-color: #f8f9fa;
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --hover-bg: #e9ecef;
+    --active-bg: #e7f5ff;
+    --active-color: #1c7ed6;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --panel-border-radius: 12px;
+    --btn-border-radius: 8px;
+    --dot-color: #e9ecef;
+}
+
+body.dark-mode {
+    /* Dark Mode Variables */
+    --bg-color: #121212;
+    --panel-bg: rgba(30, 30, 30, 0.9);
+    --text-color: #e9ecef;
+    --border-color: #343a40;
+    --hover-bg: #2b2b2b;
+    --active-bg: #183153;
+    --active-color: #339af0;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --dot-color: #2b2b2b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Dotted background */
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0;
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Canvas Setup */
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden; /* Important for custom pan/zoom */
+    touch-action: none; /* Prevent default browser panning on mobile */
+}
+
+canvas {
+    display: block;
+    /* Will be scaled internally for Retina */
+}
+
+/* UI Panels */
+.floating-panel {
+    position: absolute;
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    z-index: 10;
+    padding: 8px;
+    transition: background 0.3s, border 0.3s, box-shadow 0.3s;
+}
+
+/* Toolbar */
+#toolbar {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 4px;
+}
+
+/* Properties Panel */
+#properties-panel {
+    top: 20px;
+    left: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+}
+
+/* Utilities Panel */
+#utility-panel {
+    top: 20px;
+    right: 20px;
+    gap: 4px;
+}
+
+/* Zoom Panel */
+#zoom-panel {
+    bottom: 20px;
+    left: 20px;
+    gap: 8px;
+}
+
+#zoom-level {
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 45px;
+    text-align: center;
+    user-select: none;
+}
+
+/* Buttons */
+button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--btn-border-radius);
+    transition: all 0.2s;
+}
+
+.tool-btn, .icon-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+}
+
+.tool-btn:hover, .icon-btn:hover {
+    background: var(--hover-bg);
+}
+
+.tool-btn.active {
+    background: var(--active-bg);
+    color: var(--active-color);
+}
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-color);
+    margin: 0 4px;
+}
+
+#properties-panel .divider {
+    width: 100%;
+    height: 1px;
+    margin: 4px 0;
+}
+
+/* Property Groups */
+.property-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.property-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: #868e96;
+}
+
+.color-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.color-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+}
+
+.color-btn.active {
+    border-color: var(--active-color);
+    box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--active-color);
+}
+
+.stroke-width-picker {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.stroke-btn {
+    width: 32px;
+    height: 32px;
+    background: var(--hover-bg);
+}
+
+.stroke-btn.active {
+    background: var(--active-bg);
+    border: 1px solid var(--active-color);
+}
+
+.stroke-dot {
+    background: currentColor;
+    border-radius: 50%;
+}
+
+/* Text Input Overlay */
+#text-input {
+    position: absolute;
+    z-index: 20;
+    background: transparent;
+    border: 1px dashed var(--active-color);
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.2;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 0 0 2px rgba(28, 126, 214, 0.3);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    #toolbar {
+        top: auto;
+        bottom: 20px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 90vw;
+        padding: 4px;
+    }
+    
+    #properties-panel {
+        top: 70px;
+        left: 10px;
+        padding: 10px;
+        transform: scale(0.9);
+        transform-origin: top left;
+    }
+    
+    #utility-panel {
+        top: 10px;
+        right: 10px;
+    }
+    
+    #zoom-panel {
+        bottom: 80px;
+        left: 10px;
+        transform: scale(0.9);
+        transform-origin: bottom left;
+    }
+}

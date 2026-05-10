@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Whiteboard</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+    <div id="app">
+        <!-- Main Toolbar (Tools) -->
+        <div id="toolbar" class="panel floating-panel">
+            <button class="tool-btn active" data-tool="select" title="Select (V)"><i class="ph ph-cursor"></i></button>
+            <div class="divider"></div>
+            <button class="tool-btn" data-tool="draw" title="Draw (P)"><i class="ph ph-pencil-simple"></i></button>
+            <button class="tool-btn" data-tool="rect" title="Rectangle (R)"><i class="ph ph-rectangle"></i></button>
+            <button class="tool-btn" data-tool="circle" title="Circle (C)"><i class="ph ph-circle"></i></button>
+            <button class="tool-btn" data-tool="arrow" title="Arrow (A)"><i class="ph ph-arrow-up-right"></i></button>
+            <button class="tool-btn" data-tool="text" title="Text (T)"><i class="ph ph-text-t"></i></button>
+            <button class="tool-btn" data-tool="note" title="Sticky Note (N)"><i class="ph ph-note"></i></button>
+            <div class="divider"></div>
+            <button class="tool-btn" data-tool="eraser" title="Eraser (E)"><i class="ph ph-eraser"></i></button>
+        </div>
+
+        <!-- Properties Panel -->
+        <div id="properties-panel" class="panel floating-panel">
+            <div class="property-group">
+                <label>Stroke</label>
+                <div class="color-picker" id="stroke-colors">
+                    <button class="color-btn active" data-color="#1e1e1e" style="background: #1e1e1e;"></button>
+                    <button class="color-btn" data-color="#e03131" style="background: #e03131;"></button>
+                    <button class="color-btn" data-color="#2f9e44" style="background: #2f9e44;"></button>
+                    <button class="color-btn" data-color="#1971c2" style="background: #1971c2;"></button>
+                    <button class="color-btn" data-color="#f08c00" style="background: #f08c00;"></button>
+                </div>
+            </div>
+            <div class="property-group">
+                <label>Background</label>
+                <div class="color-picker" id="bg-colors">
+                    <button class="color-btn active" data-color="transparent" style="background: transparent; border: 1px dashed #ccc;"></button>
+                    <button class="color-btn" data-color="#ffc9c9" style="background: #ffc9c9;"></button>
+                    <button class="color-btn" data-color="#b2f2bb" style="background: #b2f2bb;"></button>
+                    <button class="color-btn" data-color="#a5d8ff" style="background: #a5d8ff;"></button>
+                    <button class="color-btn" data-color="#ffec99" style="background: #ffec99;"></button>
+                </div>
+            </div>
+            <div class="property-group">
+                <label>Stroke Width</label>
+                <div class="stroke-width-picker">
+                    <button class="stroke-btn" data-width="2"><div class="stroke-dot" style="width: 2px; height: 2px;"></div></button>
+                    <button class="stroke-btn active" data-width="4"><div class="stroke-dot" style="width: 4px; height: 4px;"></div></button>
+                    <button class="stroke-btn" data-width="8"><div class="stroke-dot" style="width: 8px; height: 8px;"></div></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Utilities (Undo/Redo/Export) -->
+        <div id="utility-panel" class="panel floating-panel">
+            <button class="icon-btn" id="btn-undo" title="Undo (Ctrl+Z)"><i class="ph ph-arrow-u-up-left"></i></button>
+            <button class="icon-btn" id="btn-redo" title="Redo (Ctrl+Y)"><i class="ph ph-arrow-u-up-right"></i></button>
+            <div class="divider"></div>
+            <button class="icon-btn" id="btn-export-png" title="Export PNG"><i class="ph ph-image"></i></button>
+            <button class="icon-btn" id="btn-export-pdf" title="Export PDF"><i class="ph ph-file-pdf"></i></button>
+            <div class="divider"></div>
+            <button class="icon-btn" id="btn-clear" title="Clear Canvas"><i class="ph ph-trash"></i></button>
+            <button class="icon-btn" id="btn-theme" title="Toggle Theme"><i class="ph ph-moon"></i></button>
+        </div>
+
+        <!-- Zoom Controls -->
+        <div id="zoom-panel" class="panel floating-panel">
+            <button class="icon-btn" id="btn-zoom-out"><i class="ph ph-minus"></i></button>
+            <span id="zoom-level">100%</span>
+            <button class="icon-btn" id="btn-zoom-in"><i class="ph ph-plus"></i></button>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="canvas-container">
+            <canvas id="whiteboard"></canvas>
+        </div>
+
+        <!-- Text Input Overlay (for Text Tool & Sticky Notes) -->
+        <textarea id="text-input" spellcheck="false" style="display: none;"></textarea>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
